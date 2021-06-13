@@ -4,19 +4,31 @@ class App extends React.Component {
   constructor(props){
   super(props);
   this.state = {
-    localData:' ',
+    localData:'',
+    errormsg:'',
+    // displaymsg:false,
+    diplayMap:false,
   }
   }
   viewCity = async(event) =>{
     event.preventDefault()
     let city=event.target.city.value;
     let localUrl=`https://us1.locationiq.com/v1/search.php?key=pk.69bb6f4ae8b4a0aa92152b526f92b531&q=${city}&format=json`;
-    let localResult=await axios.get(localUrl);
-    console.log(localResult.data);
-    console.log(city);
-    this.setState({
-      localData:localResult.data[0],
-    })
+    try {
+      let localResult=await axios.get(localUrl);
+      this.setState({
+        localData:localResult.data[0],
+        diplayMap:true,
+      })
+    }
+    catch {
+      this.setState({
+        errormsg:`"error": "Unable to geocode"`,
+     
+        // displaymsg:true,
+      })
+    }
+  
   }
   render (){
     return(
@@ -26,9 +38,13 @@ class App extends React.Component {
           <input type='text' name='city' placeholder='Enter A City' />
           <input type='submit' value='Explore' />
         </form>
-        <p>{this.state.localData.display_name}</p>
-        <p>{this.state.localData.lat}</p>
-        <p>{this.state.localData.lon}</p>
+        <p>City details: {this.state.localData.display_name}</p>
+        <p>City latitude{this.state.localData.lat}</p>
+        <p>City longitude{this.state.localData.lon}</p>
+        {this.state.diplayMap && <img src={`https://maps.locationiq.com/v3/staticmap?key=pk.69bb6f4ae8b4a0aa92152b526f92b531&center=${this.state.localData.lat},${this.state.localData.lon}`} alt={'map'} /> }
+        
+        {this.state.errormsg}
+
       </div>
     );
   }

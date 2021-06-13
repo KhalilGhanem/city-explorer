@@ -1,16 +1,20 @@
 # city-explorer
 
 **Author**: Khalil Ghanem
+
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
+This is a React application that used for exploring the cities around the world,
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+The user should navigate to [City Explorer](https://city-explorer-khalilghanem.netlify.app/) and the enter the city name to see the longitude and latitude of this city, and an image of it's map.
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+* ReactJS
+* Bootstrap 
+* Locationiq Aoi
+* Axios library
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
@@ -22,12 +26,12 @@
 
 
 
-Name of feature: ________________________________
+Name of feature: city exploration 
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: TWO Hours
 
-Start time: _____
+Start time: 2PM
 
-Finish time: _____
+Finish time: 5PM
 
-Actual time needed to complete: _____
+Actual time needed to complete: Three Hours
