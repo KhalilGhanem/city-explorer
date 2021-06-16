@@ -10,7 +10,9 @@ class App extends React.Component {
     citys:'',
     // displaymsg:false,
     diplayMap:false,
-    wITEM:{}
+    wITEM:{},
+    wITEM1:{},
+    wITEM2:{},
   }
   }
   viewCity = async(event) =>{
@@ -26,10 +28,13 @@ class App extends React.Component {
       })
       let serverUrl=process.env.REACT_APP_SERVER; 
       console.log(serverUrl);
-      const url=`http://localhost:3001/weather?lat=47.60621&lon=-122.33207&searchQuery=${this.state.citys}`;
+      const url=`${serverUrl}/weather?searchQuery=${this.state.citys}`;
       let weatherData=await axios.get(url);
       this.setState({
         wITEM:weatherData.data[0],
+        wITEM1:weatherData.data[1],
+        wITEM2:weatherData.data[2],
+        
         
       })
       console.log(weatherData);
@@ -60,6 +65,10 @@ class App extends React.Component {
           <Weather 
           Wdate={this.state.wITEM.date}
           Wdescription={this.state.wITEM.description}
+          Wdate1={this.state.wITEM1.date}
+          Wdescription1={this.state.wITEM1.description}
+          Wdate2={this.state.wITEM2.date}
+          Wdescription2={this.state.wITEM2.description}
           />
         </section>
         {this.state.errormsg}
