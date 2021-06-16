@@ -29,7 +29,7 @@ class App extends React.Component {
       // let serverUrl=process.env.REACT_APP_SERVER; 
       // console.log(serverUrl);
       // const url=`${serverUrl}/weather?searchQuery=${this.state.citys}`;
-      const url=`https://city-explorer-lab07-server.herokuapp.com//weather?searchQuery=${this.state.citys}`;
+      const url=`https://city-explorer-lab07-server.herokuapp.com/weather?searchQuery=${this.state.citys}`;
       let weatherData=await axios.get(url);
       this.setState({
         wITEM:weatherData.data[0],
