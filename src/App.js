@@ -71,9 +71,7 @@ class App extends React.Component {
     catch {
       this.setState({
         errormsg:`"error": "Unable to geocode"`,
-     
-        // displaymsg:true,
-      })
+           })
     }
   
   }
@@ -136,8 +134,6 @@ class App extends React.Component {
           </div>  
         )
       })
-     ////title,overview,average_votes,total_votes,image_url,popularity,released_on
-
        }
         {this.state.diplayMap && <img src={`https://maps.locationiq.com/v3/staticmap?key=pk.69bb6f4ae8b4a0aa92152b526f92b531&center=${this.state.localData.lat},${this.state.localData.lon}`} alt={'map'} /> }
                 
