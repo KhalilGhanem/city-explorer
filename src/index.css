@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('https://wallpapercave.com/wp/wp3340833.jpg');
+
   text-align: center;
   color: aliceblue;
   
@@ -21,3 +21,9 @@ div {
   margin-right: auto;
   font-weight: bold;
 }
+
+.moviesdiv {
+  display: inline-block;
+  
+}
+
