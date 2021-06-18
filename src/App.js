@@ -42,7 +42,7 @@ class App extends React.Component {
       });
       
       const weatherKey=process.env.WEATHER_KEY;
-      let weatherurl=`http://localhost:3011/weather?lat=${this.state.localData.lat}&lon=${this.state.localData.lon}&key=d9a174b6fad5447eb9c4f13d929f06c0`;
+      let weatherurl=`https://city-explorer-lab07-server.herokuapp.com/weather?lat=${this.state.localData.lat}&lon=${this.state.localData.lon}&key=d9a174b6fad5447eb9c4f13d929f06c0`;
 
       axios.get(weatherurl).then(weatherResult =>{
         this.setState({
@@ -57,7 +57,7 @@ class App extends React.Component {
       });
 
       const MOVIES_KEY=process.env.MOVIES_KEY;
-      let moviesurl=`http://localhost:3011/movie?api_key=${MOVIES_KEY}&query=${city}`;
+      let moviesurl=`https://city-explorer-lab07-server.herokuapp.com/movie?api_key=${MOVIES_KEY}&query=${city}`;
       axios.get(moviesurl).then(moviesResult =>{
         console.log(moviesResult.data);
         this.setState({
