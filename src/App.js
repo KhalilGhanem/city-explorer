@@ -1,6 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import Weather from './components/Weather';
+import {Form ,Button, Table ,Row, Col } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Movies from './components/Movies';
+import { render } from '@testing-library/react';
+
 class App extends React.Component {
   constructor(props){
   super(props);
@@ -8,11 +13,17 @@ class App extends React.Component {
     localData:'',
     errormsg:'',
     citys:'',
-    // displaymsg:false,
+    showTable:false,
+    showWeather:false,
     diplayMap:false,
     wITEM:{},
     wITEM1:{},
     wITEM2:{},
+    weatherdate:'',
+    weatherdescription:'',
+    werror:'',
+    moviesdata:[],
+    showMovies:false,
   }
   }
   viewCity = async(event) =>{
@@ -20,25 +31,42 @@ class App extends React.Component {
     let city=event.target.city.value;
     let localUrl=`https://us1.locationiq.com/v1/search.php?key=pk.69bb6f4ae8b4a0aa92152b526f92b531&q=${city}&format=json`;
     try {
+      
       let localResult=await axios.get(localUrl);
       this.setState({
         localData:localResult.data[0],
         diplayMap:true,
+        showTable:true,
         citys:city,
-      })
-      // let serverUrl=process.env.REACT_APP_SERVER; 
-      // console.log(serverUrl);
-      // const url=`${serverUrl}/weather?searchQuery=${this.state.citys}`;
-      const url=`https://city-explorer-lab07-server.herokuapp.com/weather?searchQuery=${this.state.citys}`;
-      let weatherData=await axios.get(url);
-      this.setState({
-        wITEM:weatherData.data[0],
-        wITEM1:weatherData.data[1],
-        wITEM2:weatherData.data[2],
         
-        
-      })
-      console.log(weatherData);
+      });
+      
+      const weatherKey=process.env.WEATHER_KEY;
+      let weatherurl=`http://localhost:3011/weather?lat=${this.state.localData.lat}&lon=${this.state.localData.lon}&key=d9a174b6fad5447eb9c4f13d929f06c0`;
+
+      axios.get(weatherurl).then(weatherResult =>{
+        this.setState({
+          weatherdate:weatherResult.data[0].date,
+          weatherdescription:weatherResult.data[0].description,
+          showWeather:true,
+        })
+      }).catch(err =>{
+        this.setState({
+          werror:err.message,
+        })
+      });
+
+      const MOVIES_KEY=process.env.MOVIES_KEY;
+      let moviesurl=`http://localhost:3011/movie?api_key=${MOVIES_KEY}&query=${city}`;
+      axios.get(moviesurl).then(moviesResult =>{
+        console.log(moviesResult.data);
+        this.setState({
+          moviesdata:moviesResult.data,
+          showMovies:true,
+        })
+      });
+
+
     }
     catch {
       this.setState({
@@ -52,25 +80,71 @@ class App extends React.Component {
   render (){
     return(
       <div>
+       
         <h1>City Explorer</h1>
-        <form onSubmit={this.viewCity}>
-          <input type='text' name='city' placeholder='Enter A City' />
-          <input type='submit' value='Explore' />
-        </form>
-        <p>City details: {this.state.localData.display_name}</p>
-        <p>City latitude{this.state.localData.lat}</p>
-        <p>City longitude{this.state.localData.lon}</p>
-        {this.state.diplayMap && <img src={`https://maps.locationiq.com/v3/staticmap?key=pk.69bb6f4ae8b4a0aa92152b526f92b531&center=${this.state.localData.lat},${this.state.localData.lon}`} alt={'map'} /> }
+
+         <Form onSubmit={this.viewCity} >
+              <Form.Group className="mb-3" >
+                <Form.Label>City Name</Form.Label>
+                <Form.Control type="text" placeholder="Enter City Name" name='city'/>
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Explore
+              </Button>
+         </Form>
+         {this.state.showTable && 
+         <div> 
+         <Table striped bordered hover size="sm" name='cityTable'>
+            <thead>
+              <tr>
+                <th>City Name</th>
+                <th>latitude</th>
+                <th>longitude</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{this.state.localData.display_name}</td>
+                <td>{this.state.localData.lat}</td>
+                <td>{this.state.localData.lon}</td>
+              </tr>
+            </tbody>
+          </Table>
+          </div>
+        }
+        {this.state.showWeather && 
+        <Weather 
+          wdate={this.state.weatherdate}
+          wdescription={this.state.weatherdescription}
+          werror={this.state.werror}
+        />
+        }
         
+      { this.state.showMovies && this.state.moviesdata.map((item,idx)=>{
+        return (
+          <div key={idx} className='moviesdiv'>
+             
+            <Movies 
+            title={item.title}
+            overview={item.overview}
+            average_votes={item.average_votes}
+            total_votes={item.total_votes}
+            image_url={item.image_url}
+            popularity={item.popularity}
+            released_on={item.released_on}
+            />
+          </div>  
+        )
+      })
+     ////title,overview,average_votes,total_votes,image_url,popularity,released_on
+
+       }
+        {this.state.diplayMap && <img src={`https://maps.locationiq.com/v3/staticmap?key=pk.69bb6f4ae8b4a0aa92152b526f92b531&center=${this.state.localData.lat},${this.state.localData.lon}`} alt={'map'} /> }
+                
+        
+
         <section>
-          <Weather 
-          Wdate={this.state.wITEM.date}
-          Wdescription={this.state.wITEM.description}
-          Wdate1={this.state.wITEM1.date}
-          Wdescription1={this.state.wITEM1.description}
-          Wdate2={this.state.wITEM2.date}
-          Wdescription2={this.state.wITEM2.description}
-          />
+         
         </section>
         {this.state.errormsg}
       
